@@ -5,10 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour{
     [SerializeField] Transform shootPosition;
     [SerializeField] GameObject shootPrefab;
+    [SerializeField] int life = 100;
 
     // Start is called before the first frame update
     void Start(){
-        
+        GameManager.instance.LifeAtt(life);
     }
 
     // Update is called once per frame
@@ -33,4 +34,16 @@ public class Player : MonoBehaviour{
         var bulltet = Instantiate(shootPrefab, shootPosition.position, Quaternion.identity);
         bulltet.transform.rotation = transform.rotation;
     }
+
+    public void ApplyDamage(int damage) {
+        if (damage < life){
+            life -= damage;
+            GameManager.instance.LifeAtt(life);
+        }
+        else{
+            GameManager.instance.PlayerIsDead();
+        }
+    }
+
+
 }
