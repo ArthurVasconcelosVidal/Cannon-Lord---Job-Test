@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour{
     [SerializeField] Image lifeBar;
     #endregion
 
+    [SerializeField] GameObject playerReference;
+
     void Awake(){
         if (instance == null){
             instance = this;
@@ -26,7 +28,7 @@ public class GameManager : MonoBehaviour{
 
     // Start is called before the first frame update
     void Start(){
-        PointCount(0);
+        ApplyPontuation(0);
     }
 
     // Update is called once per frame
@@ -38,7 +40,7 @@ public class GameManager : MonoBehaviour{
         //DoSomething
     }
 
-    public void PointCount(int pontuation) {
+    public void ApplyPontuation(int pontuation) {
         points += pontuation;
         pointsTXT.text = ("Pontuação: " + points.ToString());
     }
@@ -52,5 +54,9 @@ public class GameManager : MonoBehaviour{
         lifeTXT.text = life.ToString();
         life = life / 100;
         lifeBar.fillAmount = life;
+    }
+
+    public GameObject ReturnPlayer() {
+        return playerReference;
     }
 }

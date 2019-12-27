@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour{
     [SerializeField] int bulletSpeed = 3;
+    [SerializeField] int damage = 1;
 
     // Start is called before the first frame update
     void Start(){
@@ -21,5 +22,9 @@ public class BulletBehaviour : MonoBehaviour{
 
     void BulletMovimentation() {
         transform.position = transform.position + transform.up * bulletSpeed * Time.fixedDeltaTime;
+    }
+
+    public int ReturnBulletDamage() {
+        return damage;
     }
 }

@@ -6,6 +6,8 @@ public class Player : MonoBehaviour{
     [SerializeField] Transform shootPosition;
     [SerializeField] GameObject shootPrefab;
     [SerializeField] int life = 100;
+    bool canShoot = true;
+    [SerializeField] float shootRecoveryTime = 1.5f;
 
     // Start is called before the first frame update
     void Start(){
@@ -30,9 +32,17 @@ public class Player : MonoBehaviour{
         transform.up = lookDirection;
     }
 
-    void Shoot() {
-        var bulltet = Instantiate(shootPrefab, shootPosition.position, Quaternion.identity);
-        bulltet.transform.rotation = transform.rotation;
+    void Shoot(){
+        if (canShoot){
+            var bulltet = Instantiate(shootPrefab, shootPosition.position, Quaternion.identity);
+            bulltet.transform.rotation = transform.rotation;
+            Invoke("ShootRecover", shootRecoveryTime);
+            canShoot = false;
+        }    
+    }
+
+    void ShootRecover() {
+        canShoot = true;
     }
 
     public void ApplyDamage(int damage) {
@@ -44,6 +54,5 @@ public class Player : MonoBehaviour{
             GameManager.instance.PlayerIsDead();
         }
     }
-
 
 }
