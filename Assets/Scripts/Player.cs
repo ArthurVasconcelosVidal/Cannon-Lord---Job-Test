@@ -5,19 +5,32 @@ using UnityEngine;
 public class Player : MonoBehaviour{
     [SerializeField] Transform shootPosition;
     [SerializeField] GameObject shootPrefab;
-    [SerializeField] int life = 100;
+    Rigidbody2D rigidBody;
     bool canShoot = true;
+    bool automaticMov = true;
+
+    #region Atributes
+    public bool movType = false;
+    [SerializeField] int life = 100;
     [SerializeField] float shootRecoveryTime = 1.5f;
+    #endregion
 
     // Start is called before the first frame update
     void Start(){
         GameManager.instance.LifeAtt(life);
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update(){
-        LookToMouse();
-        InputAction();
+        if (!GameManager.instance.isPaused){
+            if (movType)
+                LookToMouse();
+            else
+                AutomaticMoviment();
+
+            InputAction();
+        }
     }
 
     void InputAction(){
@@ -30,6 +43,22 @@ public class Player : MonoBehaviour{
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 lookDirection = new Vector2(mousePosition.x - transform.position.x, mousePosition.y - transform.position.y);
         transform.up = lookDirection;
+    }
+
+    void AutomaticMoviment() {
+        if (rigidBody.rotation > 90){
+            automaticMov = true;
+        }
+        else if(rigidBody.rotation < -90){
+            automaticMov = false;
+        }
+
+        if (automaticMov){
+            rigidBody.rotation -= 1;
+        }
+        else{
+            rigidBody.rotation += 1;
+        }
     }
 
     void Shoot(){
@@ -51,8 +80,14 @@ public class Player : MonoBehaviour{
             GameManager.instance.LifeAtt(life);
         }
         else{
+            life = 0;
+            GameManager.instance.LifeAtt(life);
             GameManager.instance.PlayerIsDead();
         }
+    }
+
+    public void ToggleMovType() {
+        movType = !movType;
     }
 
 }

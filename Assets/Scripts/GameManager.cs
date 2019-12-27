@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour{
     public static GameManager instance;
-
+    public bool isPaused;
+    bool gameOver = false;
+    [SerializeField] Canvas gameOverCanvas;
     #region Time Points And Life
     int points = 0;
     float pastTime = 0;
@@ -29,6 +31,8 @@ public class GameManager : MonoBehaviour{
     // Start is called before the first frame update
     void Start(){
         ApplyPontuation(0);
+        PauseGame(true);
+        gameOverCanvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -37,7 +41,7 @@ public class GameManager : MonoBehaviour{
     }
 
     public void PlayerIsDead() {
-        //DoSomething
+        GameOver();
     }
 
     public void ApplyPontuation(int pontuation) {
@@ -58,5 +62,31 @@ public class GameManager : MonoBehaviour{
 
     public GameObject ReturnPlayer() {
         return playerReference;
+    }
+
+    public void ToggleMovimentationType() {
+        playerReference.GetComponent<Player>().ToggleMovType();
+    }
+
+    public void PauseGame(bool isPaused) {
+        if (!gameOver){
+            if (isPaused){
+                Time.timeScale = 0;
+                this.isPaused = true;
+            }
+            else{
+                Time.timeScale = 1;
+                this.isPaused = false;
+            }
+        }
+        else{
+            Time.timeScale = 0;
+        }
+    }
+
+    void GameOver() {
+        gameOverCanvas.enabled = true;
+        gameOver = true;
+        PauseGame(true);
     }
 }

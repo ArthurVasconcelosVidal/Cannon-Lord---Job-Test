@@ -21,7 +21,7 @@ public class EnemySpawn : MonoBehaviour{
     }
 
     void TimeToSpawn() {
-        float time = Random.Range(2,5);
+        float time = Random.Range(1,4);
         Invoke("SpawnNewEnemy", time);
     }
 }

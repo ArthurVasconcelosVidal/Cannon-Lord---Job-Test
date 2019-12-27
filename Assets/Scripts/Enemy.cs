@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour{
     Rigidbody2D rigidbody2d;
-
     [SerializeField] Vector2 direction = new Vector2(1, 0.2f);
+
+    #region Atributes
     public EnemyPreset preset;
     int pontuation;
     int damage;
     int enemySpeed;
     int life;
+    #endregion
 
     // Start is called before the first frame update
     void Awake(){
